@@ -25,17 +25,20 @@ void pushWithIndex(Node** head, unsigned long long data, int position, int sizeO
     }
 }
 
-void pushAfter(Node** node, unsigned long long data, Node** tail) {
+void pushAfter(Node** node, unsigned long long data, Node** tail, Node** head) {
 
-    Node* newNode = new Node;
+    if ((*node)->next == (*tail)->next) pushBack(head, data, tail);
+    else {
+        Node* newNode = new Node;
 
-    Node* t = (*node)->next;
-    newNode->next = (*node)->next;
-    newNode->data = data;
-    newNode->previous = *node;
+        Node* t = (*node)->next;
+        newNode->next = (*node)->next;
+        newNode->data = data;
+        newNode->previous = *node;
 
-    newNode->next->previous = newNode;
-    newNode->previous->next = newNode;
+        newNode->next->previous = newNode;
+        newNode->previous->next = newNode;
+    }
 }
 
 void pushBefore(Node** node, unsigned long long data, Node** tail) {

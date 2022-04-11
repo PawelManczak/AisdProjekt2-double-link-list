@@ -27,6 +27,16 @@ void printNaodwrot(Node* tail) {
     cout << endl;
 }
 
+Node* getTail(Node* head) {
+    Node* current = head;
+
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    return current;
+}
+
 
 Node* getElemenntyByIndex(int index, Node* head) {
     Node* temp = head;
@@ -90,7 +100,9 @@ int main()
                 pushFront(&head, x, &tail);
             }
             else if (!strcmp(yy, "END")) {
-                pushBack(&head, x, &tail);
+                Node* tmp = getTail(head);
+                pushBefore(&tmp, x, &tail);
+                //pushBack(&head, x, &tail);
             }
             else {
                 pushBefore(&iterators[atoll(yy)], x, &tail);
@@ -105,15 +117,17 @@ int main()
                 pushFront(&head, x, &tail);
             }
             else if (!strcmp(yy, "END")) {
+                //pushAfter(&iterators[atoll(yy)], x, &tail, &head);
                 pushBack(&head, x, &tail);
             }
             else {
-                pushAfter(&iterators[atoll(yy)], x, &tail);
+                pushAfter(&iterators[atoll(yy)], x, &tail, &head);
             }
         }
         else if (!strcmp(command, "R")) {
             char xx[5];
             cin >> xx;
+
             if (!strcmp(xx, "BEG")) {
                 popFront(&head);
             }
@@ -121,8 +135,39 @@ int main()
                 popBack(&head);
             }
             else {
-                popByNode(&iterators[atoi(xx)]);
-                iterators[atoll(xx)] = iterators[atoll(xx)]->next;
+                if (tail == NULL || size == 1) {
+                    popBack(&head);
+                }
+                else if (iterators[atoi(xx)]->next == tail->next) {
+                    // cout <<"-----"<< size;
+                    if (size != 1) {
+                        tail = tail->previous;
+                        popBack(&head);
+                    }
+
+
+                    for (int i = 0; i < 10; i++) {
+                        if (iterators[i] == iterators[atoi(xx)])
+                            iterators[i] = tail;
+                    }
+                }
+                else {
+                    // cout << "--"<<getTail(head)->data << endl;
+                    popByNode(&iterators[atoi(xx)], &head);
+                    //cout << tail->data;
+                    //cout << iterators[atoi(xx)]->data;
+                    for (int i = 0; i < 10; i++) {
+                        if (iterators[i] == iterators[atoi(xx)])
+                            iterators[i] = iterators[i]->next;
+                    }
+                }
+
+
+                // cout <<"----------"<< iterators[atoi(xx)]->data << endl;
+                size--;
+
+
+
             }
         }
         else if (!strcmp(command, "P")) {

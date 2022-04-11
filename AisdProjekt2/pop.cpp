@@ -55,11 +55,22 @@ void popWithIndex(Node** head, int position)
     }
 }
 
-void popByNode(Node** node) {
+void popByNode(Node** node, Node** head) {
 
-    Node* tempTyl = (*node)->previous;
-    Node* tempPrzod = (*node)->next;
+    if ((*node)->next == NULL) {
+        popBack(head);
+    }
+    else if ((*node)->previous == NULL)
+    {
+        popFront(head);
+    }
+    else {
+        Node* tempTyl = (*node)->previous;
+        Node* tempPrzod = (*node)->next;
 
-    tempTyl->next = tempPrzod;
-    tempPrzod->previous = tempTyl;
+        if (tempTyl != NULL) tempTyl->next = tempPrzod;
+        if (tempPrzod != NULL) tempPrzod->previous = tempTyl;
+        //else tempTyl->next = NULL;
+
+    }
 }

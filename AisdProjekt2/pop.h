@@ -5,5 +5,5 @@
 void popFront(Node** head);
 void popBack(Node** head);
 void popWithIndex(Node** head, int position);
-void popByNode(Node** Node);
+void popByNode(Node** node, Node** head);
 #endif
