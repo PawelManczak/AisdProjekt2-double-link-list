@@ -1,76 +1,43 @@
-#include <iostream>
 #include "pop.h"
+#include <iostream>
 
-void popFront(Node** head)
-{
-    if (*head != NULL) {
-        if ((*head)->next == NULL) {
-            *head = NULL;
-        }
-        else {
-            Node* tmp;
-            tmp = (*head)->next;
-            free(*head);
-            *head = tmp;
-            (*head)->previous = NULL;
-        }
-    }
-}
-
-void popBack(Node** head)
-{
-    if ((*head)->next == NULL)
-    {
+void popFront(Node** head, Node** tail) {
+    if (*head == *tail) {
         *head = NULL;
-    }///
-    else
-    {
-        Node* current = *head;
-        while (current->next->next != NULL) {
-            current = current->next;
-        }
-        free(current->next);
-        current->next = NULL;
+        *tail = NULL;
+        delete* tail;
+        delete* head;
     }
-}
-
-void popWithIndex(Node** head, int position)
-{////
-    if (position == 0) popFront(head);
-    else
-    {
-        Node* current = *head;
+    else {
         Node* tmp;
-
-        int i = 0;
-        while (current->next != NULL && i < position - 1) {
-            current = current->next;
-            i++;
-        }
-
-        tmp = current->next;
-        current->next = tmp->next;
-        current->next->previous = current;
-        free(tmp);
+        tmp = (*head)->next;
+        delete* head;
+        *head = tmp;
+        (*head)->previous = NULL;
     }
 }
 
-void popByNode(Node** node, Node** head) {
-
-    if ((*node)->next == NULL) {
-        popBack(head);
+void popBack(Node** head, Node** tail) {
+    if (*head == *tail) popFront(head, tail);
+    else {
+        Node* tmp;
+        tmp = (*tail)->previous;
+        delete *tail;
+        *tail = tmp;
+        (*tail)->next = NULL;
     }
-    else if ((*node)->previous == NULL)
-    {
-        popFront(head);
-    }
+}
+void popByNode(Node** node, Node** head, Node** tail) {
+    if (*node == *head) popFront(head, tail);
+    else if (*node == *tail) popBack(head, tail);
     else {
         Node* tempTyl = (*node)->previous;
         Node* tempPrzod = (*node)->next;
 
-        if (tempTyl != NULL) tempTyl->next = tempPrzod;
-        if (tempPrzod != NULL) tempPrzod->previous = tempTyl;
-        //else tempTyl->next = NULL;
+        delete* node;
 
+        tempTyl->next = tempPrzod;
+        tempPrzod->previous = tempTyl;
     }
+
 }

@@ -1,14 +1,18 @@
-#ifndef push_h
+#ifndef  push_h
 #define push_h
+
 struct Node {
-    long long int data;
-    int iloscDanych;
-    struct Node* next;
-    struct Node* previous;
+    Node* previous = nullptr;
+    Node* next = nullptr;
+    unsigned long long int data;
 };
-void pushWithIndex(Node** head, unsigned long long data, int position, int sizeOfList, Node** tail);
-void pushFront(Node** head, unsigned long long data, Node** tail);
-void pushBack(Node** head, unsigned long long data, Node** tail);
-void pushAfter(Node** node, unsigned long long longdata, Node** tail, Node** head);
-void pushBefore(Node** node, unsigned long long data, Node** tail);
-#endif // !push_h
+
+void pushFront(Node** head, Node** tail, unsigned long long int data);
+
+void pushBack(Node** head, Node** tail, unsigned long long int data);
+
+void pushAfter(Node** node, Node** head, Node** tail, unsigned long long int data);
+
+void pushBefore(Node** node, Node** head, Node** tail, unsigned long long int data);
+
+#endif // ! push_hh

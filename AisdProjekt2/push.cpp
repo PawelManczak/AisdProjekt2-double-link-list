@@ -1,112 +1,62 @@
 #include <iostream>
 #include "push.h"
 
-void pushWithIndex(Node** head, unsigned long long data, int position, int sizeOfList, Node** tail)
-{
-    if (position == 0) pushFront(head, data, tail);
-    else if (position == sizeOfList) pushBack(head, data, tail);
-    else
-    {
-        Node* current = *head;
-        Node* tmp;
+void pushBack(Node** head, Node** tail, unsigned long long int data) {
 
-        int i = 0;
-        while (current->next != NULL && i < position - 1) {
-            current = current->next;
-            i++;
-        }
+    if (*head == NULL) pushFront(head, tail, data);
+    else {
+        Node* newNode = new Node;
+        newNode->data = data;
+        newNode->previous = *tail;
+        newNode->next = NULL;
 
-        tmp = current->next;
-        current->next = new Node;
-        current->next->data = data;
-        current->next->previous = current;
-        tmp->previous = current->next;
-        current->next->next = tmp;
+        (*tail)->next = newNode;
+
+        *tail = newNode;
     }
 }
 
-void pushAfter(Node** node, unsigned long long data, Node** tail, Node** head) {
+void pushAfter(Node** node, Node** head, Node** tail, unsigned long long int data) {
 
-    if ((*node)->next == (*tail)->next) pushBack(head, data, tail);
+    if (*node == *tail || *node == nullptr) pushBack(head, tail, data);
     else {
         Node* newNode = new Node;
-
-        Node* t = (*node)->next;
-        newNode->next = (*node)->next;
         newNode->data = data;
         newNode->previous = *node;
+        newNode->next = (*node)->next;
 
-        newNode->next->previous = newNode;
-        newNode->previous->next = newNode;
+        (*node)->next->previous = newNode;
+        (*node)->next = newNode;
     }
 }
 
-void pushBefore(Node** node, unsigned long long data, Node** tail) {
-
-    Node* newNode = new Node;
-
-    newNode->next = *node;
-    newNode->data = data;
-    newNode->previous = (*node)->previous;
-
-
-    (*node)->previous = newNode;
-    newNode->previous->next = newNode;
-}
-
-void pushFront(Node** head, unsigned long long data, Node** tail)
-{
-    if (*head == NULL) { //LISTA PUSTA
-        *head = new Node;
-        *tail = new Node;
-        (*head)->data = data;
-        (*head)->previous = NULL;
-        (*head)->next = NULL;
-
-        (*tail)->data = data;
-        (*tail)->previous = NULL;
-        (*tail)->next = NULL;
-    }
+void pushBefore(Node** node, Node** head, Node** tail, unsigned long long int data) {
+    if (*node == *head || *node == NULL) pushFront(head, tail, data);
     else {
         Node* newNode = new Node;
         newNode->data = data;
-        newNode->previous = NULL;
-        newNode->next = *head;
-        (*head)->previous = newNode;
-        *head = newNode;
+        newNode->previous = (*node)->previous;
+        newNode->next = *node;
+
+        (*node)->previous->next = newNode;
+        (*node)->previous = newNode;
     }
 }
 
-void pushBack(Node** head, unsigned long long data, Node** tail)
-{
-    if (*head == NULL)
-    {
-        *head = new Node;
-        *tail = new Node;
-        (*head)->data = data;
-        (*head)->previous = NULL;
-        (*head)->next = NULL;
-        (*tail)->data = data;
-        (*tail)->previous = NULL;
-        (*tail)->next = NULL;
+void pushFront(Node** head, Node** tail, unsigned long long int data) {
+
+    Node* newNode = new Node;
+    newNode->data = data;
+    newNode->previous = NULL;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *tail = newNode;
     }
-    else
-    {
-        Node* current = *head;
-        Node* new_element;
-
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = new Node;
-        current->next->data = data;
-        current->next->previous = current;
-        current->next->next = NULL;
-
-        (*tail)->data = data;
-        (*tail)->previous = current;
-        (*tail)->next = NULL;
+    else {
+        newNode->next = *head;
+        (*head)->previous = newNode;
     }
 
-
+    *head = newNode;
 }
